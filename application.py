@@ -16,14 +16,29 @@ def noti():
     res = {
         "version": "2.0",
         "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": location + command + str(titles[0])+str(links[0])
-                    }
-                }
-            ]
+        "outputs": [
+        {
+            "basicCard": {
+            "title": "청라동소식",
+            "description": str(titles[-1]),
+            "thumbnail": {
+            "imageUrl": "http://k.kakaocdn.net/dn/83BvP/bl20duRC1Q1/lj3JUcmrzC53YIjNDkqbWK/i_6piz1p.jpg"
+        },
+        "profile": {
+            "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4BJ9LU4Ikr_EvZLmijfcjzQKMRCJ2bO3A8SVKNuQ78zu2KOqM",
+            "nickname": "보물상자"
+          },
+          "buttons": [
+            {
+              "action":  "webLink",
+              "label": "구경하기",
+              "webLinkUrl": "https://e.kakao.com/t/hello-ryan"
+            }
+          ]
         }
+      }
+    ]
+  }
     }
     return jsonify(res)
 
