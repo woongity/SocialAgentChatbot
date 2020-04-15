@@ -8,8 +8,10 @@ def noti():
     req = request.get_json()
     location = req["action"]["detailParams"]["sys_location"]["value"]
     command = req["action"]["detailParams"]["noti"]["value"]
-    titles = cw
     
+    post = cw()
+    titles = post.get_titles()
+    links = post.get_links()
     
     res = {
         "version": "2.0",
@@ -17,7 +19,7 @@ def noti():
             "outputs": [
                 {
                     "simpleText": {
-                        "text": location + command + str(titles[0])
+                        "text": location + command + str(titles[0])+str(links[0])
                     }
                 }
             ]
