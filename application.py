@@ -10,24 +10,19 @@ def get_url(location):
         return data[location]
     return None
     
-@app.route('/command',methods=['POST'])
-def command():
+@app.route('/paper',methods=['POST'])
+def paper():
     req = request.get_json()
-    res = {
-        "version": "2.0",
-        "template": {
-        "outputs": [
-            {
-            "carousel": {
-                "type": "basicCard",
-                "items": [
-                        ]
-                    }
-                }
-            ]
-        }
-    }
-
+    paper_cata = req["action"]["detailParams"]["paper_cata"]["value"]
+    order_command = req["action"]["detailParams"]["order_command"]["value"]
+    print(paper_cata,file = sys.stderr)
+    
+@app.route('/manpage',methods=['POST'])
+def manpage():
+    print("he",sys.stderr)
+    
+    
+    
 @app.route('/noti', methods=['POST'])
 def noti():
     req = request.get_json()
@@ -37,7 +32,7 @@ def noti():
         url = "cheongna2"
     else :
         url = get_url(location)
-    print(url, file=sys.stderr)
+    # print(url, file=sys.stderr)
     post = cw(url)
     titles = post.get_titles()
     links = post.get_links()
