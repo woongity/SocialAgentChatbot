@@ -1,6 +1,9 @@
 from noticrawlpost import Crawler as cw
-import json, sys
+import json
+import sys
 from flask import Flask, request, jsonify
+import get_similarity
+
 app = Flask(__name__)
 
 
@@ -9,28 +12,22 @@ def get_url(location):
     if location in data:
         return data[location]
     return None
-    
-@app.route('/paper',methods=['POST'])
+
+
+@app.route('/paper', methods=['POST'])
 def paper():
     req = request.get_json()
     paper_cata = req["action"]["detailParams"]["paper_cata"]["value"]
     order_command = req["action"]["detailParams"]["order_command"]["value"]
-    print(paper_cata,file = sys.stderr)
-    
-@app.route('/manpage',methods=['POST'])
-def manpage():
-    print("he",sys.stderr)
-    
     
     
 @app.route('/noti', methods=['POST'])
 def noti():
     req = request.get_json()
     location = req["action"]["detailParams"]["sys_location"]["value"]
-    
-    if get_url(location) == None:
+    if get_url(location) is None:
         url = "cheongna2"
-    else :
+    else:
         url = get_url(location)
     # print(url, file=sys.stderr)
     post = cw(url)
