@@ -2,7 +2,7 @@ from noticrawlpost import Crawler as cw
 import json
 import sys
 from flask import Flask, request, jsonify
-import get_similarity
+import most_similar
 
 app = Flask(__name__)
 
@@ -19,8 +19,8 @@ def paper():
     req = request.get_json()
     paper_cata = req["action"]["detailParams"]["paper_cata"]["value"]
     order_command = req["action"]["detailParams"]["order_command"]["value"]
-    
-    
+
+
 @app.route('/noti', methods=['POST'])
 def noti():
     req = request.get_json()
@@ -29,7 +29,6 @@ def noti():
         url = "cheongna2"
     else:
         url = get_url(location)
-    # print(url, file=sys.stderr)
     post = cw(url)
     titles = post.get_titles()
     links = post.get_links()
