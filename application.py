@@ -1,6 +1,7 @@
 from noticrawlpost import Crawler as cw
 import json
 import sys
+import papers
 from flask import Flask, request, jsonify
 import most_similar
 
@@ -19,6 +20,8 @@ def paper():
     req = request.get_json()
     paper_cata = req["action"]["detailParams"]["paper_cata"]["value"]
     order_command = req["action"]["detailParams"]["order_command"]["value"]
+    if papers.get_db_row(paper_cata) is not False:
+        print(papers.get_db_row(paper_cata)['data'], sys = stderr)
 
 
 @app.route('/noti', methods=['POST'])
