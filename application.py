@@ -18,11 +18,23 @@ def get_url(location):
 @app.route('/paper', methods=['POST'])
 def paper():
     req = request.get_json()
-    paper_cata = req["action"]["detailParams"]["paper_cata"]["value"]
-    order_command = req["action"]["detailParams"]["order_command"]["value"]
+    paper_cata = req["action"]["detailParams"]["paper"]["value"]
+    order_command = req["action"]["detailParams"]["command"]["value"]
     if papers.get_db_row(paper_cata) is not False:
-        print(papers.get_db_row(paper_cata)['data'], sys = stderr)
-
+        print(papers.get_db_row(paper_cata), sys.stderr)
+    res = {
+        "version": "2.0",
+        "template": {
+        "outputs": [
+                {
+                    "simpleText":{
+                        "text" : papers.get_db_row(paper_cata)
+                    }
+                }
+            ]
+        }
+    }
+    return jsonify(res)
 
 @app.route('/noti', methods=['POST'])
 def noti():
