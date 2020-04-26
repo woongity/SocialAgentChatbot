@@ -21,7 +21,9 @@ def paper():
     req = request.get_json()
     paper_cata = req["action"]["detailParams"]["paper"]["value"]
     paper_cata.replace(" ", "")
-    # order_command = req["action"]["detailParams"]["command"]["value"]
+#     모든 이름 문자열은 스페이스를 제거한다.
+    order_command = req["action"]["detailParams"]["command"]["value"]
+    print(order_command, file=sys.stderr)
     if papers.get_db_row(paper_cata) is not False:
         print(papers.get_db_row(paper_cata), sys.stderr)
     res = {

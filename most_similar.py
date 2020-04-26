@@ -24,18 +24,18 @@ def pop_all(lists):
         lists.pop()
 
 
-def most_similar_list(string):
+def most_similar_list(string, array):
     maximum = 0
     previous = 0
     stack = []
-    for key, value in data:
-        if maximum < get_similarity(key, string):
-            maximum = get_similarity(key, string)
+    for data in array:
+        if maximum < get_similarity(data, string):
+            maximum = get_similarity(data, string)
         if previous < maximum:
             pop_all(stack)
-            stack.append({string: value})
+            stack.append({string: data})
         if previous == maximum:
-            stack.append({string: value})
+            stack.append({string: data})
         previous = get_similarity(string, stack[-1][key])
         ''' 이전에 위치한 similarity 값을 previous에,
         현재 위치한 값의 similarity를 stack에 넣으면서 previous > current_simil 이라면 pass,
