@@ -19,17 +19,7 @@ def get_url(location):
 
 # 딱맞는 장소를 입력하지 않는다면, most_similar.py에 있는 most_similar_list 함수를 통해 가장 비슷한 것들 배열을 호출.
 # 딱맞는 장소 입력시 리턴값 : str, 비슷한 장소 입력시 리턴값 : list
-@app.route('/paper', methods=['POST'])
-def paper():
-    req = request.get_json()
-    paper_cata = req["action"]["detailParams"]["paper"]["value"]
-    paper_cata.replace(" ", "")
-#     모든 이름 문자열은 스페이스를 제거한다.
-    order_command = req["action"]["detailParams"]["command"]["value"]
-    print(order_command, file=sys.stderr)
-    if papers.get_db_row(paper_cata) is not False:
-        print(papers.get_db_row(paper_cata), sys.stderr)
-    return jsonify(res)
+
 
 @app.route('/seoguNoti',methods=['POST'])
 def seoguNoti():
@@ -51,10 +41,11 @@ def seoguNoti():
 @app.route('/dongNoti', methods=['POST'])
 def dongNoti():
     req = request.get_json()
-    location = req["action"]["detailParams"]["sys_location"]["value"]
+    location = req["action"]["detailParams"]["location"]["value"]
     command = req["action"]["detailParams"]["order_command"]["value"]
+    print(location,file=sys.stderr)
     # TODO : command가 알려줘라면 noti로, 신청이라면 paper로
-    post = cw(get_url(location))
+    post = cw("http://www.seo.incheon.kr/open_content/dong/sub/dong_notice.jsp?dong="+get_url(location))
     titles = post.get_titles()
     links = post.get_links()
 #     링크와 타이틀을 다 읽어옴
