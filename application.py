@@ -1,9 +1,12 @@
 from noticrawlpost import Crawler as cw
 import json
-import sys
 import papers
 from flask import Flask, request, jsonify
 import most_similar
+import sys
+sys.path.append('/workspace/kakaobot/views')
+from cardview import carousel_card
+import simpletextview
 
 app = Flask(__name__)
 
@@ -26,68 +29,25 @@ def paper():
     print(order_command, file=sys.stderr)
     if papers.get_db_row(paper_cata) is not False:
         print(papers.get_db_row(paper_cata), sys.stderr)
-    res = {
-        "version": "2.0",
-        "template": {
-        "outputs": [
-                {
-                    "simpleText" : {
-                        "text" : papers.get_db_row(paper_cata)
-                    }
-                }
-            ]
-        }
-    }
+    cardview.
     return jsonify(res)
 
 # 유사도를 비교해서 유사 내용이 많다면 나온다면 재질문으로 버튼을 등록.
-@app.route('/noti', methods=['POST'])
+@app.route('/dongNoti', methods=['POST'])
 def noti():
     req = request.get_json()
     location = req["action"]["detailParams"]["sys_location"]["value"]
     command = req["action"]["detailParams"]["noti"]["value"]
     # TODO : command가 알려줘라면 noti로, 신청이라면 paper로
-    if get_url(location) is False:
-        url = "cheongna2"
-    else:
-        url = get_url(location)
     post = cw(url)
     titles = post.get_titles()
     links = post.get_links()
 #     링크와 타이틀을 다 읽어옴
-    length = len(links)
-    res = {
-        "version": "2.0",
-        "template": {
-        "outputs": [
-            {
-            "carousel": {
-                "type": "basicCard",
-                "items": [
-                        ]
-                    }
-                }
-            ]
-        }
-    }
-    for index in range(length):
-        b = {
-                "title": location + "공지소식",
-                    "description": titles[index],
-                    "thumbnail":
-                    {
-                        "imageUrl": "http://www.seo.incheon.kr/open_content/main/images/contents/seogu/symbol01.gif"
-                    },
-                    "buttons": [
-                    {
-                        "action":  "webLink",
-                        "label": "자세히",
-                        "webLinkUrl": links[index]
-                    }
-                ]
-            }
-        res["template"]["outputs"][0]['carousel']['items'].append(dict(b))
-    return jsonify(res)
+    res = carousel_card()
+    for index in range(0,9):
+        res.append_ele(titles[index],description,imageUrl,btnUrl)  
+    response = res.get_res()
+    return jsonify(response)
 
 
 if __name__ == "__main__":
