@@ -3,9 +3,8 @@ from bs4 import BeautifulSoup
 
 
 class Crawler:
-    def __init__(self, location):
-        URL = "http://www.seo.incheon.kr/open_content/dong/sub/dong_notice.jsp?dong=" + location
-        req = Request(URL)
+    def __init__(self,url):
+        req = Request(url)
         page = urlopen(req)
         html = page.read()
         soup = BeautifulSoup(html, 'html.parser')

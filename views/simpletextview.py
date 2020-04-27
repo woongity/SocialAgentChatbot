@@ -5,5 +5,5 @@ class single_text:
     def change_res(self,text):
         self.res["template"]["outputs"][0]["simpleText"]["text"]=text
         
-    def get_res(self)
+    def get_res(self):
         return self.res
