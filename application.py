@@ -1,7 +1,7 @@
 from noticrawlpost import Crawler as cw
 import json
 from flask import Flask, request, jsonify
-
+import dong
 import sys
 sys.path.append('/workspace/kakaobot/views')
 from cardview import carousel_card
@@ -9,17 +9,9 @@ import simpletextview
 
 app = Flask(__name__)
 
-
-def get_url(location):
-    data = {"검암경서동": "gumam", "연희동": "yeonhi", "청라1동": "cheongna1", "청라3동": "cheongna3", "청라2동": "cheongna2", "가정1동": "gajeong1", "가정2동" :",gajeong2" , "가정3동" : "gajeong3", "신현원창동" : "sinhyun", "석남1동" :"seoknam1", "석남2동" : "seoknam2", "석남3동" : "seoknam3" , "가좌1동" :"gajwa1", "가좌2동" :"gajwa2" , "가좌3동" : "gajwa3" , "가좌4동" :"gajwa4", "검단동" :"gumdan1", "불로대곡동" :"gumdan2","원당동":"gumdan3", "당하동":"gumdan4","마전동":"majeon", "오류왕길동":"gumdan5"}
-    if location in data:
-        return data[location]
-    else :
-        return "gumdan3"
-
-# 딱맞는 장소를 입력하지 않는다면, most_similar.py에 있는 most_similar_list 함수를 통해 가장 비슷한 것들 배열을 호출.
-# 딱맞는 장소 입력시 리턴값 : str, 비슷한 장소 입력시 리턴값 : list
-
+@app.route('/minwon',methods=['POST'])
+def minwon():
+    
 
 @app.route('/seoguNoti',methods=['POST'])
 def seoguNoti():
@@ -45,14 +37,14 @@ def dongNoti():
     command = req["action"]["detailParams"]["order_command"]["value"]
     print(location,file=sys.stderr)
     # TODO : command가 알려줘라면 noti로, 신청이라면 paper로
-    post = cw("http://www.seo.incheon.kr/open_content/dong/sub/dong_notice.jsp?dong="+get_url(location))
+    post = cw("http://www.seo.incheon.kr/open_content/dong/sub/dong_notice.jsp?dong="+dong.get_url(location))
     titles = post.get_titles()
     links = post.get_links()
 #     링크와 타이틀을 다 읽어옴
-    res = carousel_card()
+    res = carousel_card()`
     imageUrl = "http://www.traveli.co.kr/repository/area/logo/162.png"
     for index in range(0,9):
-        if get_url(location) == "gumdan3":
+        if dong.get_url(location) == "gumdan3":
             location = "검단3동"
         res.append_ele(location,titles[index],imageUrl,links[index])  
     response = res.get_res()
