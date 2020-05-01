@@ -2,11 +2,12 @@ from noticrawlpost import Crawler as cw
 from citynoticrawl import CityCrawler
 import json
 from flask import Flask, request, jsonify
-import dong
 import sys
+import values_py
 sys.path.append('/workspace/kakaobot/views')
 from cardview import carousel_card
-import simpletextview
+from simpletextview import single_text
+
 
 app = Flask(__name__)
 
@@ -15,11 +16,17 @@ app = Flask(__name__)
 def minwon():
     req = request.get_json()
     resource = req["action"]["detailParams"]["submit_complaints"]["value"]
-    
-@app.route('/trash')
+
+@app.route('/trash',methods=['POST'])
 def trash():
     req = request.get_json()
-    
+    # buying_place = req['action']['detailParams']['buying_place']['value']
+    trash_cata = req['action']['detailParams']["trash_cata"]["value"]
+    print(trash_cata)
+    # print(buying_place)
+    res = single_text(values_py.get_cata(trash_cata))
+    response = res.get_res()
+    return jsonify(response)
 
 @app.route('/seoguNoti', methods=['POST'])
 def seoguNoti():
@@ -75,7 +82,7 @@ def dongNoti():
     res = carousel_card()
     imageUrl = "http://www.traveli.co.kr/repository/area/logo/162.png"
     for index in range(0, 9):
-        if dong.get_url(location) == "cheongna2":
+        if values_py.get_url(location) == "cheongna2":
             location = "청라2동"
         res.append_ele(location, titles[index], imageUrl, links[index])
     response = res.get_res()
