@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 
 class Crawler:
-    def __init__(self,url):
+    def __init__(self, url):
         req = Request(url)
         page = urlopen(req)
         html = page.read()
