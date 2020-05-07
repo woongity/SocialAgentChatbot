@@ -1,6 +1,3 @@
-import sys
-
-
 class carousel_card:
     def __init__(self):
         self.res = {"version": "2.0", "template": {"outputs": [{"carousel": {"type": "basicCard","items": []}}],"quickReplies":[]}}
